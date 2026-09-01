@@ -19,7 +19,7 @@ class Database:
     def __init__(self):
         self.is_postgres = False
         self.pg_pool: Optional[asyncpg.Pool] = None
-        self.sqlite_db_path: str = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "smartvault.db"))
+        self.sqlite_db_path: str = os.getenv("SQLITE_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "smartvault.db")))
         self.database_url = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/smartvault")
 
     async def connect(self):

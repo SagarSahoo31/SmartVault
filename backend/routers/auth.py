@@ -17,6 +17,9 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 COOKIE_NAME = os.getenv("SESSION_COOKIE_NAME", "smartvault_session")
 COOKIE_SECURE = os.getenv("SESSION_COOKIE_SECURE", "false").lower() == "true"
+# Cross-domain Vercel deployments require SameSite=None + Secure=True
+# For local dev (COOKIE_SECURE=False), use SameSite=Lax to avoid browser rejection
+COOKIE_SAMESITE = "none" if COOKIE_SECURE else "lax"
 SESSION_HOURS = int(os.getenv("SESSION_EXPIRE_HOURS", "24"))
 MAX_FAILED_LOGINS = int(os.getenv("MAX_FAILED_LOGINS", "5"))
 LOCKOUT_MINUTES = int(os.getenv("LOCKOUT_MINUTES", "15"))
@@ -245,7 +248,7 @@ async def login(req: LoginRequest, request: Request, response: Response):
         value=raw_token,
         expires=int(SESSION_HOURS * 3600),
         httponly=True,
-        samesite="lax",
+        samesite=COOKIE_SAMESITE,
         secure=COOKIE_SECURE,
         path="/"
     )
@@ -317,7 +320,7 @@ async def logout(request: Request, response: Response):
                 resource_id=session_record["id"]
             )
 
-    response.delete_cookie(key=COOKIE_NAME, path="/", samesite="lax", httponly=True)
+    response.delete_cookie(key=COOKIE_NAME, path="/", samesite=COOKIE_SAMESITE, httponly=True)
     return {"message": "Logged out successfully"}
 
 

@@ -1,7 +1,14 @@
 /**
  * Typed API Client Helpers for SmartVault
  * Ensures consistent error handling and session credential inclusion.
+ *
+ * In local dev, VITE_API_BASE_URL is unset so all /api/* calls are
+ * handled by the Vite proxy (localhost:8000).
+ * In production (Vercel), set VITE_API_BASE_URL to the deployed backend URL,
+ * e.g. https://smartvault-backend.vercel.app
  */
+
+const BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string) ?? '';
 
 export class ApiError extends Error {
   status: number;
@@ -43,7 +50,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export async function apiGet<T>(url: string): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method: 'GET',
     credentials: 'include',
     headers: {
@@ -54,7 +61,7 @@ export async function apiGet<T>(url: string): Promise<T> {
 }
 
 export async function apiPost<T>(url: string, body?: any): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -67,7 +74,7 @@ export async function apiPost<T>(url: string, body?: any): Promise<T> {
 }
 
 export async function apiPostForm<T>(url: string, formData: FormData): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -79,7 +86,7 @@ export async function apiPostForm<T>(url: string, formData: FormData): Promise<T
 }
 
 export async function apiPut<T>(url: string, body?: any): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method: 'PUT',
     credentials: 'include',
     headers: {
@@ -92,7 +99,7 @@ export async function apiPut<T>(url: string, body?: any): Promise<T> {
 }
 
 export async function apiDelete<T>(url: string): Promise<T> {
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method: 'DELETE',
     credentials: 'include',
     headers: {
@@ -103,7 +110,7 @@ export async function apiDelete<T>(url: string): Promise<T> {
 }
 
 export async function apiDownload(url: string, defaultFilename: string): Promise<void> {
-  const res = await fetch(url, {
+  const res = await fetch(`${BASE_URL}${url}`, {
     method: 'GET',
     credentials: 'include',
   });
