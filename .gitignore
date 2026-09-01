@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+*.egg-info/
+.pytest_cache/
+test_smartvault.db
+smartvault.db
+test_storage/
+
+# Node
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Storage files
+storage/*
+!storage/.gitkeep
+
+# Environment files
+.env
+.env.local
+.DS_Store
+Thumbs.db

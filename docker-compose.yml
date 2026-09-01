@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: smartvault-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: smartvault
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d smartvault"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: smartvault-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smartvault-backend
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/smartvault
+      - REDIS_URL=redis://redis:6379/0
+      - REDIS_STREAM_NAME=smartvault:security_events
+      - SECRET_KEY=smartvault-dev-secret-key-change-in-production-32bytes
+      - STORAGE_DIR=/app/storage
+      - SESSION_COOKIE_NAME=smartvault_session
+      - SESSION_COOKIE_SECURE=false
+      - SESSION_EXPIRE_HOURS=24
+      - MAX_FAILED_LOGINS=5
+      - LOCKOUT_MINUTES=15
+      - EVENT_CONSUMER_KEY=smartvault-local-consumer
+      - RESEND_API_KEY=re_placeholder_key
+      - SENDER_EMAIL=onboarding@resend.dev
+      - CORS_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000
+    volumes:
+      - ./storage:/app/storage
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: smartvault-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:
