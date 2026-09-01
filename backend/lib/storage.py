@@ -22,7 +22,7 @@ ALLOWED_MIME_TYPES = {
     "video/mp4": [".mp4"],
     "application/octet-stream": [".jpg", ".jpeg", ".png", ".pdf", ".txt", ".mp3", ".mp4"]
 }
-MAX_FILE_SIZE = 25 * 1024 * 1024  # 25 MB
+MAX_FILE_SIZE = 1 * 1024 * 1024 * 1024  # 1 GB
 
 
 class StorageService:
@@ -48,7 +48,7 @@ class StorageService:
         if size <= 0:
             return False, "File is empty.", ""
         if size > MAX_FILE_SIZE:
-            return False, f"File size ({size} bytes) exceeds maximum limit of 25 MB.", ""
+            return False, f"File size ({size} bytes) exceeds maximum limit of 1 GB.", ""
 
         clean_name = self.sanitize_filename(filename)
         _, ext = os.path.splitext(clean_name)

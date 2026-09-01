@@ -48,7 +48,7 @@ export const Dashboard: React.FC = () => {
     );
   }
 
-  const storagePercentage = Math.min(Math.round((data.storage_used / (25 * 1024 * 1024)) * 100), 100);
+  const storagePercentage = Math.min(Math.round((data.storage_used / (1 * 1024 * 1024 * 1024)) * 100), 100);
 
   return (
     <div className="space-y-10">
@@ -109,7 +109,7 @@ export const Dashboard: React.FC = () => {
           </div>
           <div className="mt-4 flex items-baseline gap-2">
             <span className="text-3xl font-bold tracking-tight text-white">{formatBytes(data.storage_used)}</span>
-            <span className="font-mono text-xs text-zinc-500">of 25 MB allocation</span>
+            <span className="font-mono text-xs text-zinc-500">of 1 GB allocation</span>
           </div>
           <div className="mt-4 space-y-1.5 border-t border-zinc-800/60 pt-3">
             <div className="h-1.5 w-full overflow-hidden rounded-full bg-zinc-800">
@@ -120,7 +120,7 @@ export const Dashboard: React.FC = () => {
             </div>
             <div className="flex justify-between font-mono text-[10px] text-zinc-500">
               <span>{storagePercentage}% used</span>
-              <span>25 MB max limit</span>
+              <span>1 GB max limit</span>
             </div>
           </div>
         </div>

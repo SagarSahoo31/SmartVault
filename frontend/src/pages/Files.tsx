@@ -116,7 +116,7 @@ export const Files: React.FC = () => {
           </div>
           <h1 className="mt-1 text-3xl font-light tracking-tight text-white">My Files</h1>
           <p className="mt-1 text-xs text-zinc-400">
-            Manage your stored personal documents and digital assets. Maximum file size: 25 MB.
+            Manage your stored personal documents and digital assets. Maximum file size: 1 GB.
           </p>
         </div>
 
