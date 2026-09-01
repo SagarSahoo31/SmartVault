@@ -10,7 +10,7 @@ export const ProtectedLayout: React.FC = () => {
     return (
       <div className="flex h-screen w-screen items-center justify-center bg-zinc-950 text-zinc-400">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-emerald-500" />
+          <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-white" />
           <span className="font-mono text-xs tracking-wider uppercase text-zinc-500">Decrypting Session...</span>
         </div>
       </div>

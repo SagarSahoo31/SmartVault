@@ -15,7 +15,7 @@ export default {
           bg: '#09090b',
           card: '#121215',
           border: '#27272a',
-          accent: '#22c55e',
+          accent: '#ffffff',
           muted: '#a1a1aa'
         }
       }

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </linearGradient>
+    <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#a1a1aa"/>
+    </linearGradient>
+    <linearGradient id="glow-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Rounded Shield Container -->
+  <rect width="128" height="128" rx="28" fill="url(#bg-grad)" stroke="#27272a" stroke-width="4"/>
+  
+  <!-- Outer Shield Outline -->
+  <path d="M64 22 L94 36 C94 62 82 86 64 98 C46 86 34 62 34 36 Z" 
+        fill="none" 
+        stroke="#52525b" 
+        stroke-width="3" 
+        stroke-linejoin="round"/>
+  
+  <!-- Inner Shield Core -->
+  <path d="M64 28 L88 40 C88 61 78 80 64 90 C50 80 40 61 40 40 Z" 
+        fill="url(#glow-grad)" 
+        opacity="0.4"/>
+  
+  <!-- Padlock Shackle -->
+  <path d="M54 58 V49 C54 43.477 58.477 39 64 39 C69.523 39 74 43.477 74 49 V58" 
+        fill="none" 
+        stroke="url(#silver-grad)" 
+        stroke-width="5" 
+        stroke-linecap="round"/>
+        
+  <!-- Padlock Body -->
+  <rect x="47" y="58" width="34" height="28" rx="6" fill="#18181b" stroke="url(#silver-grad)" stroke-width="4"/>
+  
+  <!-- Keyhole Accent -->
+  <circle cx="64" cy="69" r="3.5" fill="#ffffff"/>
+  <path d="M64 71 V77" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+</svg>

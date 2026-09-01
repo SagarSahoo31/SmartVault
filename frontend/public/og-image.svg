@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Dark Radial Gradient -->
+    <radialGradient id="bg" cx="50%" cy="30%" r="80%" fx="50%" fy="30%">
+      <stop offset="0%" stop-color="#18181b"/>
+      <stop offset="60%" stop-color="#0c0c0e"/>
+      <stop offset="100%" stop-color="#000000"/>
+    </radialGradient>
+    
+    <!-- White / Silver Gradient -->
+    <linearGradient id="silver-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#a1a1aa"/>
+    </linearGradient>
+
+    <!-- Border Glow Gradient -->
+    <linearGradient id="border-glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#27272a"/>
+      <stop offset="50%" stop-color="#71717a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#27272a"/>
+    </linearGradient>
+
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#27272a" stroke-width="0.7" opacity="0.35"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Layer -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- Outer Frame -->
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="none" stroke="url(#border-glow)" stroke-width="2"/>
+
+  <!-- Top Badge: Zero Knowledge Standard -->
+  <g transform="translate(100, 100)">
+    <rect width="360" height="40" rx="20" fill="#ffffff" fill-opacity="0.06" stroke="#ffffff" stroke-opacity="0.2" stroke-width="1.5"/>
+    <circle cx="24" cy="20" r="4" fill="#ffffff"/>
+    <text x="38" y="25" fill="#f4f4f5" font-family="'IBM Plex Mono', monospace" font-size="13" font-weight="600" letter-spacing="2">ZERO-KNOWLEDGE VAULT</text>
+  </g>
+
+  <!-- Brand Heading -->
+  <text x="100" y="210" fill="#ffffff" font-family="'Outfit', sans-serif" font-size="64" font-weight="700" letter-spacing="-1">
+    SMARTVAULT
+  </text>
+  
+  <text x="100" y="280" fill="#d4d4d8" font-family="'Outfit', sans-serif" font-size="30" font-weight="300">
+    Private Personal Data Storage &amp; Asset Protection
+  </text>
+
+  <!-- Description Text -->
+  <text x="100" y="360" fill="#a1a1aa" font-family="'Outfit', sans-serif" font-size="20" font-weight="400">
+    Encrypted 1 GB file repository with bcrypt password protection,
+  </text>
+  <text x="100" y="390" fill="#a1a1aa" font-family="'Outfit', sans-serif" font-size="20" font-weight="400">
+    cryptographic session tokens, and zero telemetry exposure.
+  </text>
+
+  <!-- Feature Tags Bottom Row -->
+  <g transform="translate(100, 470)">
+    <!-- Tag 1 -->
+    <rect x="0" y="0" width="220" height="44" rx="8" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+    <text x="20" y="27" fill="#f4f4f5" font-family="'IBM Plex Mono', monospace" font-size="13">🔒 1 GB Encrypted</text>
+    
+    <!-- Tag 2 -->
+    <rect x="240" y="0" width="240" height="44" rx="8" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+    <text x="260" y="27" fill="#f4f4f5" font-family="'IBM Plex Mono', monospace" font-size="13">🛡️ Zero-Knowledge</text>
+
+    <!-- Tag 3 -->
+    <rect x="500" y="0" width="240" height="44" rx="8" fill="#18181b" stroke="#3f3f46" stroke-width="1"/>
+    <text x="520" y="27" fill="#f4f4f5" font-family="'IBM Plex Mono', monospace" font-size="13">⚡ Audit Trail Logs</text>
+  </g>
+
+  <!-- Right Side Cyber Shield Emblem -->
+  <g transform="translate(850, 160)">
+    <!-- Glow behind shield -->
+    <circle cx="120" cy="140" r="140" fill="#ffffff" fill-opacity="0.04"/>
+    
+    <!-- Shield Container -->
+    <rect width="240" height="280" rx="36" fill="#18181b" stroke="#52525b" stroke-width="3"/>
+    
+    <!-- Shield Shape Outline -->
+    <path d="M120 45 L185 75 C185 140 160 195 120 225 C80 195 55 140 55 75 Z" 
+          fill="none" 
+          stroke="url(#silver-grad)" 
+          stroke-width="5" 
+          stroke-linejoin="round"/>
+    
+    <!-- Padlock Body inside Shield -->
+    <rect x="85" y="125" width="70" height="55" rx="10" fill="#09090b" stroke="#ffffff" stroke-width="4"/>
+    <path d="M98 125 V105 C98 93 108 83 120 83 C132 83 142 93 142 105 V125" 
+          fill="none" 
+          stroke="#ffffff" 
+          stroke-width="5" 
+          stroke-linecap="round"/>
+    <circle cx="120" cy="148" r="5" fill="#ffffff"/>
+    <path d="M120 152 V163" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

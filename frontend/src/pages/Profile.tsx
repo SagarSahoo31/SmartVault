@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import { apiGet, apiPut, apiPost } from '../lib/api';
 import { User, EmailStatus } from '../lib/types';
 import { useSession } from '../lib/session';
+import { SEO } from '../components/SEO';
 
 export const Profile: React.FC = () => {
   const { user, checkSession } = useSession();
@@ -89,60 +90,78 @@ export const Profile: React.FC = () => {
 
   return (
     <div className="space-y-8 max-w-4xl">
+      <SEO
+        title="Security & Profile Settings"
+        description="Manage identity details, email notifications, and cryptographic authentication credentials."
+        canonicalPath="/profile"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: 'SmartVault Account Security and Profile',
+          description: 'Manage user identity and authentication credentials.',
+          url: 'https://smartvault.app/profile',
+        }}
+      />
+
       {/* Header */}
-      <div className="border-b border-zinc-800/80 pb-6">
-        <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-emerald-400">
-          <UserCheck className="h-3 w-3" />
+      <section aria-labelledby="profile-heading" className="border-b border-zinc-800/80 pb-6">
+        <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-300">
+          <UserCheck className="h-3 w-3 text-white" />
           ACCOUNT SETTINGS & CREDENTIALS
         </div>
-        <h1 className="mt-1 text-3xl font-light tracking-tight text-white">Security & Profile</h1>
+        <h1 id="profile-heading" className="mt-1 text-3xl font-light tracking-tight text-white">
+          Security &amp; Profile Settings
+        </h1>
         <p className="mt-1 text-xs text-zinc-400">
           Manage your account identity and vault authentication credentials.
         </p>
-      </div>
+      </section>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {/* Panel 1: Profile Details */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 backdrop-blur-sm shadow-xl space-y-6">
+        <section aria-labelledby="identity-heading" className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 backdrop-blur-sm shadow-xl space-y-6">
           <div className="flex items-center gap-2 border-b border-zinc-800/80 pb-4">
-            <UserIcon className="h-4 w-4 text-emerald-400" />
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-zinc-200">
+            <UserIcon className="h-4 w-4 text-white" />
+            <h2 id="identity-heading" className="font-mono text-xs font-semibold uppercase tracking-wider text-zinc-200">
               Identity Profile
-            </h3>
+            </h2>
           </div>
 
           <form onSubmit={handleUpdateProfile} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
+              <label htmlFor="profile-display-name" className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
                 Display Name
               </label>
               <input
+                id="profile-display-name"
                 type="text"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 required
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
+              <label htmlFor="profile-email" className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
                 Primary Email Address
               </label>
               <input
+                id="profile-email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-500">
+              <label htmlFor="profile-username" className="font-mono text-[11px] uppercase tracking-wider text-zinc-500">
                 Legacy Compatibility Username
               </label>
               <input
+                id="profile-username"
                 type="text"
                 value={user?.username || ''}
                 disabled
@@ -168,57 +187,60 @@ export const Profile: React.FC = () => {
               )}
             </button>
           </form>
-        </div>
+        </section>
 
         {/* Panel 2: Password Security */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 backdrop-blur-sm shadow-xl space-y-6">
+        <section aria-labelledby="password-heading" className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-6 backdrop-blur-sm shadow-xl space-y-6">
           <div className="flex items-center gap-2 border-b border-zinc-800/80 pb-4">
             <Key className="h-4 w-4 text-zinc-400" />
-            <h3 className="font-mono text-xs font-semibold uppercase tracking-wider text-zinc-200">
+            <h2 id="password-heading" className="font-mono text-xs font-semibold uppercase tracking-wider text-zinc-200">
               Password Security
-            </h3>
+            </h2>
           </div>
 
           <form onSubmit={handleUpdatePassword} className="space-y-4">
             <div className="space-y-1.5">
-              <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
+              <label htmlFor="current-password" className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
                 Current Password
               </label>
               <input
+                id="current-password"
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
+              <label htmlFor="new-password" className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
                 New Password
               </label>
               <input
+                id="new-password"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
+              <label htmlFor="confirm-password" className="font-mono text-[11px] uppercase tracking-wider text-zinc-400">
                 Confirm New Password
               </label>
               <input
+                id="confirm-password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
                 required
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3.5 py-2 text-sm text-white font-mono focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40"
               />
             </div>
 
@@ -237,14 +259,14 @@ export const Profile: React.FC = () => {
               )}
             </button>
           </form>
-        </div>
+        </section>
       </div>
 
       {/* Security Architecture & Integration Status */}
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 backdrop-blur-sm space-y-4">
-        <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-emerald-400">
-          <ShieldCheck className="h-4 w-4" />
-          Cryptographic Protection & Service Integrations
+      <section aria-labelledby="architecture-heading" className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-6 backdrop-blur-sm space-y-4">
+        <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-300">
+          <ShieldCheck className="h-4 w-4 text-white" />
+          <h2 id="architecture-heading">Cryptographic Protection &amp; Service Integrations</h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-zinc-400">
@@ -262,12 +284,12 @@ export const Profile: React.FC = () => {
               Resend Email Integration Adapter
             </span>
             <p className="leading-relaxed">
-              Server-side transactional email adapter: <span className="font-mono text-emerald-400">{emailStatus?.provider || 'resend'}</span>
+              Server-side transactional email adapter: <span className="font-mono text-zinc-200 font-semibold">{emailStatus?.provider || 'resend'}</span>
               {emailStatus?.configured ? ' (Configured)' : ' (Development Mode / Simulated)'} with sender <span className="font-mono text-zinc-300">{emailStatus?.sender || 'onboarding@resend.dev'}</span>.
             </p>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 };

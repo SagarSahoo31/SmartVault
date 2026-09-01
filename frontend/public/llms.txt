@@ -1,0 +1,49 @@
+# SmartVault — Confidential Personal Data Storage
+
+> SmartVault is an isolated, zero-knowledge personal storage application providing cryptographic file privacy, granular access logging, and zero telemetry exposure of user file payloads.
+
+## System Architecture
+
+- **Domain**: https://smartvault.app
+- **Stack**: FastAPI (Python 3.11+ async backend), SQLite (WAL mode) / PostgreSQL, React (TypeScript + TailwindCSS + Vite).
+- **Storage Limit**: 1 GB per user account.
+- **Allowed Formats**: `.jpg`, `.jpeg`, `.png`, `.pdf`, `.txt`, `.mp3`, `.mp4`.
+- **Security Boundaries**:
+  - Passwords hashed using standard `bcrypt` (12 rounds) with constant-time verification.
+  - Session tokens generated via 256-bit cryptographically secure pseudo-random number generator (CSPRNG) and stored as SHA-256 digests.
+  - Strict directory traversal protection with path normalization.
+  - Security audit telemetry records operational events only—never plaintext passwords or confidential file contents.
+
+## Key Web Routes
+
+- `/login` — Secure user authentication gateway.
+- `/dashboard` — Vault overview, storage meter, quick actions, and recent file activity.
+- `/files` — Encrypted file repository: upload, download, inspect metadata, and delete assets.
+- `/activity` — Personal immutable audit trail documenting all account actions.
+- `/profile` — Identity management, email configuration, and credential updates.
+- `/404` — Cryptographic error recovery interface.
+
+## API Contracts
+
+### Authentication (`/api/auth`)
+- `POST /api/auth/login` — Authenticate with email/username and password. Sets `smartvault_session` HTTP-only secure cookie.
+- `POST /api/auth/logout` — Invalidate current session token.
+- `GET /api/auth/session` — Query active authentication state and user details.
+
+### Storage & Files (`/api/files`)
+- `GET /api/files` — Retrieve metadata array for all files belonging to authenticated user.
+- `POST /api/files` — Upload multipart file (enforces 1 GB cap, extension verification, and MIME check).
+- `GET /api/files/{id}` — Retrieve isolated file metadata.
+- `GET /api/files/{id}/download` — Stream decrypted file payload to authenticated owner.
+- `DELETE /api/files/{id}` — Permanently remove file from vault and disk.
+
+### Dashboard & Analytics (`/api/dashboard`)
+- `GET /api/dashboard` — Aggregated metrics: storage used, file count, recent uploads, recent events.
+
+### Audit & Security Logs (`/api/activity`)
+- `GET /api/activity` — Chronological timeline of security and access events.
+
+## Contact & Compliance
+- **Operator**: SmartVault Security Systems
+- **Privacy Standard**: Zero-Knowledge Payload Isolation
+- **Documentation**: https://smartvault.app/llms.txt

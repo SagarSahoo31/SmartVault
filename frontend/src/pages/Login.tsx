@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, Navigate } from 'react-router-dom';
-import { Shield, Lock, ArrowRight, ShieldCheck, Database, EyeOff, Eye } from 'lucide-react';
+import { useNavigate, Navigate, Link } from 'react-router-dom';
+import { Shield, Lock, ArrowRight, ShieldCheck, Database, EyeOff, Eye, FileCode } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiPost } from '../lib/api';
 import { LoginResponse } from '../lib/types';
 import { useSession } from '../lib/session';
+import { SEO } from '../components/SEO';
 
 export const Login: React.FC = () => {
   const [identifier, setIdentifier] = useState('user123@example.com');
@@ -27,7 +28,6 @@ export const Login: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      // Determine if identifier is email format or legacy username
       const payload = identifier.includes('@')
         ? { email: identifier.trim().toLowerCase(), password }
         : { username: identifier.trim(), password };
@@ -37,7 +37,6 @@ export const Login: React.FC = () => {
       toast.success('Authenticated to SmartVault.');
       navigate('/dashboard');
     } catch (err: any) {
-      // Generic error message without revealing account existence
       const msg = err.message || 'The username or password was not accepted.';
       toast.error(msg);
     } finally {
@@ -50,6 +49,19 @@ export const Login: React.FC = () => {
       data-testid="login-page"
       className="flex min-h-screen w-full bg-zinc-950 text-zinc-100 font-sans selection:bg-zinc-800 selection:text-white"
     >
+      <SEO
+        title="Secure Sign In"
+        description="Authenticate securely to your private zero-knowledge SmartVault digital file repository."
+        canonicalPath="/login"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: 'SmartVault Secure Authentication Portal',
+          description: 'Authenticate securely to your private zero-knowledge SmartVault digital file repository.',
+          url: 'https://smartvault.app/login',
+        }}
+      />
+
       {/* Left Intro Banner (Desktop) */}
       <div className="relative hidden w-1/2 flex-col justify-between border-r border-zinc-800/80 bg-zinc-950 p-12 lg:flex overflow-hidden">
         {/* Subtle geometric background grid */}
@@ -58,7 +70,7 @@ export const Login: React.FC = () => {
         <div className="relative z-10">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-zinc-700 bg-zinc-900 shadow-md">
-              <Shield className="h-6 w-6 text-emerald-400" />
+              <Shield className="h-6 w-6 text-white" aria-label="SmartVault Shield" />
             </div>
             <div>
               <h1 className="font-sans text-xl font-bold tracking-tight text-white">SMARTVAULT</h1>
@@ -70,7 +82,7 @@ export const Login: React.FC = () => {
 
           <div className="mt-20 max-w-md space-y-4">
             <h2 className="text-3xl font-light tracking-tight text-white leading-tight">
-              A quiet place for <span className="font-normal text-emerald-400">private things</span>.
+              A quiet place for <span className="font-medium text-white underline decoration-zinc-600 underline-offset-4">private things</span>.
             </h2>
             <p className="text-sm leading-relaxed text-zinc-400">
               SmartVault is designed around a single immutable principle: user data is private.
@@ -82,9 +94,9 @@ export const Login: React.FC = () => {
         {/* Feature Highlights */}
         <div className="relative z-10 space-y-4">
           <div className="flex items-start gap-3 rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-4">
-            <ShieldCheck className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+            <ShieldCheck className="h-5 w-5 text-white shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-mono text-xs font-semibold uppercase text-zinc-200">Zero-Knowledge Telemetry</h4>
+              <h3 className="font-mono text-xs font-semibold uppercase text-zinc-200">Zero-Knowledge Telemetry</h3>
               <p className="text-xs text-zinc-400 mt-0.5">
                 Emits structured operational security metadata without exposing confidential file contents or plaintext credentials.
               </p>
@@ -94,17 +106,20 @@ export const Login: React.FC = () => {
           <div className="flex items-start gap-3 rounded-lg border border-zinc-800/80 bg-zinc-900/40 p-4">
             <Database className="h-5 w-5 text-zinc-400 shrink-0 mt-0.5" />
             <div>
-              <h4 className="font-mono text-xs font-semibold uppercase text-zinc-200">Isolated Storage Layer</h4>
+              <h3 className="font-mono text-xs font-semibold uppercase text-zinc-200">Isolated Storage Layer</h3>
               <p className="text-xs text-zinc-400 mt-0.5">
-                High-security file system storage with cryptographic session tokens and constant-time bcrypt password hashing.
+                High-security 1 GB file system storage with cryptographic session tokens and constant-time bcrypt password hashing.
               </p>
             </div>
           </div>
         </div>
 
         <div className="relative z-10 flex items-center justify-between font-mono text-[11px] text-zinc-600">
-          <span>TARGET PLATFORM SPECIFICATION v1.0</span>
-          <span>ENTERPRISE OPEN SOURCE STACK</span>
+          <span>PLATFORM SPECIFICATION v1.0</span>
+          <a href="/llms.txt" className="hover:text-zinc-400 underline flex items-center gap-1">
+            <FileCode className="h-3 w-3" />
+            <span>llms.txt</span>
+          </a>
         </div>
       </div>
 
@@ -112,8 +127,8 @@ export const Login: React.FC = () => {
       <div className="flex flex-1 flex-col items-center justify-center p-6 sm:p-12">
         <div className="w-full max-w-md space-y-8">
           <div className="space-y-2">
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 font-mono text-[11px] font-medium text-emerald-400">
-              <Lock className="h-3 w-3" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-zinc-700/80 bg-zinc-900/60 px-3 py-1 font-mono text-[11px] font-medium text-zinc-300">
+              <Lock className="h-3 w-3 text-white" />
               AUTHENTICATION GATEWAY
             </div>
             <h2 className="text-2xl font-bold tracking-tight text-white">Enter Private Vault</h2>
@@ -130,18 +145,19 @@ export const Login: React.FC = () => {
           >
             {/* Email / Username Input */}
             <div className="space-y-2">
-              <label className="font-mono text-xs font-medium uppercase tracking-wider text-zinc-400">
+              <label htmlFor="login-identifier" className="font-mono text-xs font-medium uppercase tracking-wider text-zinc-400">
                 Email Address or Username
               </label>
               <div className="relative">
                 <input
+                  id="login-identifier"
                   data-testid="login-email-input"
                   type="text"
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
                   placeholder="user123@example.com"
                   required
-                  className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all font-mono"
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2.5 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40 transition-all font-mono"
                 />
               </div>
             </div>
@@ -149,23 +165,25 @@ export const Login: React.FC = () => {
             {/* Password Input */}
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <label className="font-mono text-xs font-medium uppercase tracking-wider text-zinc-400">
+                <label htmlFor="login-password" className="font-mono text-xs font-medium uppercase tracking-wider text-zinc-400">
                   Password
                 </label>
               </div>
               <div className="relative">
                 <input
+                  id="login-password"
                   data-testid="login-password-input"
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2.5 pr-10 text-sm text-white placeholder-zinc-600 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 transition-all font-mono"
+                  className="w-full rounded-lg border border-zinc-700 bg-zinc-950 px-4 py-2.5 pr-10 text-sm text-white placeholder-zinc-600 focus:border-white focus:outline-none focus:ring-1 focus:ring-white/40 transition-all font-mono"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -199,10 +217,19 @@ export const Login: React.FC = () => {
             </div>
           </form>
 
-          {/* Privacy Footnote */}
-          <p className="text-center font-mono text-[11px] text-zinc-600">
-            Protected by SmartVault Security Architecture & Opaque Session Tokens
-          </p>
+          {/* Privacy & Nav Footnote */}
+          <div className="space-y-2 text-center">
+            <p className="font-mono text-[11px] text-zinc-600">
+              Protected by SmartVault Security Architecture &amp; Opaque Session Tokens
+            </p>
+            <div className="flex justify-center items-center gap-3 font-mono text-[11px] text-zinc-600">
+              <Link to="/404" className="hover:text-zinc-400 transition-colors">Recovery</Link>
+              <span>•</span>
+              <a href="/sitemap.xml" className="hover:text-zinc-400 transition-colors">Sitemap</a>
+              <span>•</span>
+              <a href="/llms.txt" className="hover:text-zinc-400 transition-colors">LLMs API Guide</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

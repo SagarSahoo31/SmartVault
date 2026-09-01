@@ -1,37 +1,54 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'sonner';
 import { queryClient } from './lib/queryClient';
 import { SessionProvider } from './lib/session';
 import { ProtectedLayout } from './components/ProtectedLayout';
-import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
-import { Files } from './pages/Files';
-import { Activity } from './pages/Activity';
-import { Profile } from './pages/Profile';
+
+// Lazy load all route chunks for performance and code splitting
+const Login = lazy(() => import('./pages/Login').then((m) => ({ default: m.Login })));
+const Dashboard = lazy(() => import('./pages/Dashboard').then((m) => ({ default: m.Dashboard })));
+const Files = lazy(() => import('./pages/Files').then((m) => ({ default: m.Files })));
+const Activity = lazy(() => import('./pages/Activity').then((m) => ({ default: m.Activity })));
+const Profile = lazy(() => import('./pages/Profile').then((m) => ({ default: m.Profile })));
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })));
+
+const PageLoadingFallback: React.FC = () => (
+  <div className="flex min-h-screen w-full items-center justify-center bg-zinc-950 text-zinc-100">
+    <div className="flex flex-col items-center gap-3">
+      <div className="h-7 w-7 animate-spin rounded-full border-2 border-zinc-800 border-t-white" />
+      <span className="font-mono text-xs uppercase tracking-widest text-zinc-500">Initializing Vault...</span>
+    </div>
+  </div>
+);
 
 export const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
         <BrowserRouter>
-          <Routes>
-            {/* Public Authentication Route */}
-            <Route path="/login" element={<Login />} />
+          <Suspense fallback={<PageLoadingFallback />}>
+            <Routes>
+              {/* Public Authentication Route */}
+              <Route path="/login" element={<Login />} />
 
-            {/* Protected Vault Routes */}
-            <Route element={<ProtectedLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/files" element={<Files />} />
-              <Route path="/activity" element={<Activity />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
+              {/* Protected Vault Routes */}
+              <Route element={<ProtectedLayout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/files" element={<Files />} />
+                <Route path="/activity" element={<Activity />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
 
-            {/* Default Fallback Redirect */}
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Routes>
+              {/* Root redirect to Dashboard */}
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+              {/* Explicit 404 and Catch-All Unknown Route Handler */}
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
         <Toaster
           theme="dark"

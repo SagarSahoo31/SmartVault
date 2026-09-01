@@ -2,13 +2,111 @@
 <html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SmartVault — Private Personal Data Storage</title>
+    <meta name="theme-color" content="#09090b" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Primary Title & Descriptions -->
+    <title>SmartVault — Private Confidential Storage</title>
+    <meta name="title" content="SmartVault — Private Confidential Storage" />
+    <meta
+      name="description"
+      content="SmartVault is an isolated, zero-knowledge personal storage system providing cryptographic file privacy, 1 GB allocation, and immutable audit logs."
+    />
+    <meta name="keywords" content="private storage, secure vault, zero knowledge storage, encrypted file repository, digital asset protection, audit logs" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://smartvault.app/" />
+
+    <!-- Favicon & Web Manifest -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SmartVault" />
+    <meta property="og:url" content="https://smartvault.app/" />
+    <meta property="og:title" content="SmartVault — Private Confidential Storage" />
+    <meta
+      property="og:description"
+      content="Zero-knowledge private storage system for confidential personal documents and digital assets with 1 GB allocation."
+    />
+    <meta property="og:image" content="https://smartvault.app/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://smartvault.app/" />
+    <meta name="twitter:title" content="SmartVault — Private Confidential Storage" />
+    <meta
+      name="twitter:description"
+      content="Zero-knowledge private storage system for confidential personal documents and digital assets."
+    />
+    <meta name="twitter:image" content="https://smartvault.app/og-image.svg" />
+
     <!-- Google Fonts: Outfit and IBM Plex Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Structured Data (JSON-LD): WebApplication & SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebApplication",
+          "@id": "https://smartvault.app/#application",
+          "name": "SmartVault",
+          "url": "https://smartvault.app",
+          "applicationCategory": "SecurityApplication",
+          "operatingSystem": "All modern browsers",
+          "browserRequirements": "Requires JavaScript. Requires HTML5.",
+          "description": "Zero-knowledge private personal storage system providing cryptographic file security, 1 GB allocation, and immutable audit logs.",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "featureList": [
+            "1 GB Encrypted Storage Allocation",
+            "Zero-Knowledge Operational Telemetry",
+            "Bcrypt (12 rounds) Password Cryptography",
+            "Immutable Session Audit Trails",
+            "Path Traversal and MIME Inspection Protection"
+          ]
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://smartvault.app/#organization",
+          "name": "SmartVault Security Systems",
+          "url": "https://smartvault.app",
+          "logo": "https://smartvault.app/favicon.svg",
+          "sameAs": [
+            "https://github.com/SagarSahoo31/SmartVault"
+          ],
+          "knowsAbout": [
+            "Data Encryption",
+            "Zero-Knowledge Architecture",
+            "Digital Asset Custody"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://smartvault.app/#website",
+          "url": "https://smartvault.app",
+          "name": "SmartVault",
+          "publisher": {
+            "@id": "https://smartvault.app/#organization"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body class="bg-zinc-950 text-zinc-100 antialiased selection:bg-zinc-800 selection:text-white min-h-screen">
     <div id="root"></div>

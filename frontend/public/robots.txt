@@ -1,0 +1,15 @@
+# SmartVault Robots Policy
+# https://smartvault.app/robots.txt
+
+User-agent: *
+Allow: /
+Allow: /login
+Allow: /llms.txt
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /files
+Disallow: /activity
+Disallow: /profile
+
+# Sitemap location
+Sitemap: https://smartvault.app/sitemap.xml

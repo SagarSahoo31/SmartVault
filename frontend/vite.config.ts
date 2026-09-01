@@ -13,4 +13,19 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    // Disable production source maps to avoid leaking source structure and decrease build size
+    sourcemap: false,
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'query-vendor': ['@tanstack/react-query'],
+          'icons-vendor': ['lucide-react'],
+          'ui-vendor': ['sonner', 'clsx', 'tailwind-merge'],
+        },
+      },
+    },
+  },
 });

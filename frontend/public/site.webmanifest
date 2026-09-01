@@ -1,0 +1,17 @@
+{
+  "name": "SmartVault — Private Confidential Storage",
+  "short_name": "SmartVault",
+  "description": "Zero-knowledge private storage system for confidential personal documents and digital assets.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

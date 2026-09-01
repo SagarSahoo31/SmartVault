@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import {
   UploadCloud,
   FileText,
@@ -12,11 +13,13 @@ import {
   X,
   Lock,
   File,
+  History,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { apiGet, apiPostForm, apiDelete, apiDownload } from '../lib/api';
 import { FileMetadata } from '../lib/types';
 import { queryClient } from '../lib/queryClient';
+import { SEO } from '../components/SEO';
 
 function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
@@ -107,14 +110,29 @@ export const Files: React.FC = () => {
 
   return (
     <div data-testid="files-page" className="space-y-8">
+      <SEO
+        title="Encrypted Files (1 GB)"
+        description="Manage encrypted personal assets and documents stored inside your private 1 GB vault."
+        canonicalPath="/files"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'WebPage',
+          name: 'SmartVault Encrypted File Repository',
+          description: 'Upload, download, and inspect metadata for confidential stored assets.',
+          url: 'https://smartvault.app/files',
+        }}
+      />
+
       {/* Top Header & Upload Bar */}
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end border-b border-zinc-800/80 pb-6">
+      <section aria-labelledby="files-heading" className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end border-b border-zinc-800/80 pb-6">
         <div>
-          <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-emerald-400">
-            <Lock className="h-3 w-3" />
+          <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-300">
+            <Lock className="h-3 w-3 text-white" />
             ENCRYPTED FILE REPOSITORY
           </div>
-          <h1 className="mt-1 text-3xl font-light tracking-tight text-white">My Files</h1>
+          <h1 id="files-heading" className="mt-1 text-3xl font-light tracking-tight text-white">
+            Encrypted File Repository
+          </h1>
           <p className="mt-1 text-xs text-zinc-400">
             Manage your stored personal documents and digital assets. Maximum file size: 1 GB.
           </p>
@@ -130,10 +148,12 @@ export const Files: React.FC = () => {
             disabled={isUploading}
             accept=".jpg,.jpeg,.png,.pdf,.txt,.mp3,.mp4"
             className="hidden"
+            aria-label="Upload file to vault"
           />
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
+            aria-label="Upload document to vault"
             className="flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-zinc-950 shadow hover:bg-zinc-200 transition-colors disabled:opacity-50 cursor-pointer"
           >
             {isUploading ? (
@@ -144,27 +164,34 @@ export const Files: React.FC = () => {
             <span>{isUploading ? 'Securing File...' : 'Upload File'}</span>
           </button>
         </div>
-      </div>
+      </section>
 
       {/* Allowed Formats Tagline */}
-      <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-zinc-500">
-        <span className="text-zinc-400">Supported Formats:</span>
-        {['JPG', 'PNG', 'PDF', 'TXT', 'MP3', 'MP4'].map((fmt) => (
-          <span key={fmt} className="rounded border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-zinc-400">
-            .{fmt.toLowerCase()}
-          </span>
-        ))}
+      <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] text-zinc-500">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-zinc-400">Supported Formats:</span>
+          {['JPG', 'PNG', 'PDF', 'TXT', 'MP3', 'MP4'].map((fmt) => (
+            <span key={fmt} className="rounded border border-zinc-800 bg-zinc-900 px-2 py-0.5 text-zinc-400">
+              .{fmt.toLowerCase()}
+            </span>
+          ))}
+        </div>
+        <Link to="/activity" className="flex items-center gap-1 text-zinc-400 hover:text-zinc-200 transition-colors">
+          <History className="h-3 w-3" />
+          <span>View file access log</span>
+        </Link>
       </div>
 
       {/* Main Files Table */}
-      <div
+      <section
+        aria-label="Encrypted File Inventory"
         data-testid="files-table-panel"
         className="overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900/40 backdrop-blur-sm shadow-xl"
       >
         {isLoading ? (
           <div className="flex h-64 items-center justify-center">
             <div className="flex flex-col items-center gap-3">
-              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-emerald-500" />
+              <div className="h-6 w-6 animate-spin rounded-full border-2 border-zinc-700 border-t-white" />
               <span className="font-mono text-xs uppercase tracking-wider text-zinc-500">Scanning Vault...</span>
             </div>
           </div>
@@ -177,7 +204,7 @@ export const Files: React.FC = () => {
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 text-zinc-500">
               <File className="h-6 w-6" />
             </div>
-            <h3 className="mt-4 font-mono text-sm font-semibold text-zinc-300">Vault is empty</h3>
+            <h2 className="mt-4 font-mono text-sm font-semibold text-zinc-300">Vault is empty</h2>
             <p className="mt-1 text-xs text-zinc-500">
               No files have been added yet. Click 'Upload File' to securely store your first asset.
             </p>
@@ -187,11 +214,11 @@ export const Files: React.FC = () => {
             <table className="w-full text-left text-xs">
               <thead className="border-b border-zinc-800 bg-zinc-950/60 font-mono text-[11px] uppercase tracking-wider text-zinc-500">
                 <tr>
-                  <th className="px-6 py-3.5">Filename</th>
-                  <th className="px-6 py-3.5">MIME Type</th>
-                  <th className="px-6 py-3.5">Size</th>
-                  <th className="px-6 py-3.5">Added Date</th>
-                  <th className="px-6 py-3.5 text-right">Actions</th>
+                  <th scope="col" className="px-6 py-3.5">Filename</th>
+                  <th scope="col" className="px-6 py-3.5">MIME Type</th>
+                  <th scope="col" className="px-6 py-3.5">Size</th>
+                  <th scope="col" className="px-6 py-3.5">Added Date</th>
+                  <th scope="col" className="px-6 py-3.5 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/60 font-sans">
@@ -228,7 +255,8 @@ export const Files: React.FC = () => {
                             data-testid={`view-file-${file.id}`}
                             onClick={() => handleViewMetadata(file)}
                             title="Inspect File Metadata"
-                            className="rounded p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
+                            aria-label={`Inspect metadata for ${file.original_filename}`}
+                            className="rounded p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors cursor-pointer"
                           >
                             <Eye className="h-4 w-4" />
                           </button>
@@ -238,7 +266,8 @@ export const Files: React.FC = () => {
                             data-testid={`download-file-${file.id}`}
                             onClick={() => handleDownload(file)}
                             title="Download File"
-                            className="rounded p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-emerald-400 transition-colors"
+                            aria-label={`Download ${file.original_filename}`}
+                            className="rounded p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors cursor-pointer"
                           >
                             <Download className="h-4 w-4" />
                           </button>
@@ -248,7 +277,8 @@ export const Files: React.FC = () => {
                             data-testid={`delete-file-${file.id}`}
                             onClick={() => deleteMutation.mutate(file.id)}
                             title="Delete File"
-                            className="rounded p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-red-400 transition-colors"
+                            aria-label={`Delete ${file.original_filename}`}
+                            className="rounded p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-red-400 transition-colors cursor-pointer"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -261,22 +291,24 @@ export const Files: React.FC = () => {
             </table>
           </div>
         )}
-      </div>
+      </section>
 
       {/* Selected Asset Metadata Drawer/Modal */}
       {selectedFile && (
-        <div
+        <aside
+          aria-label="Asset Metadata Inspector"
           data-testid="file-detail-panel"
           className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col justify-between border-l border-zinc-800 bg-zinc-950 p-6 shadow-2xl backdrop-blur-xl animate-in slide-in-from-right duration-200"
         >
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-zinc-800/80 pb-4">
-              <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-emerald-400">
-                <Lock className="h-3.5 w-3.5" />
+              <div className="flex items-center gap-2 font-mono text-xs font-semibold uppercase tracking-wider text-zinc-300">
+                <Lock className="h-3.5 w-3.5 text-white" />
                 Asset Metadata Inspector
               </div>
               <button
                 onClick={() => setSelectedFile(null)}
+                aria-label="Close file metadata panel"
                 className="rounded p-1 text-zinc-400 hover:bg-zinc-800 hover:text-white"
               >
                 <X className="h-4 w-4" />
@@ -318,7 +350,7 @@ export const Files: React.FC = () => {
               </div>
 
               <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-3 text-xs text-zinc-400 space-y-1">
-                <span className="font-mono text-[10px] uppercase text-emerald-400 font-semibold">Privacy Boundary</span>
+                <span className="font-mono text-[10px] uppercase text-zinc-200 font-semibold">Privacy Boundary</span>
                 <p className="text-[11px] leading-relaxed text-zinc-400">
                   Telemetry logs track this file ID and action metadata only. File bytes remain stored inside your private vault repository.
                 </p>
@@ -330,19 +362,21 @@ export const Files: React.FC = () => {
             <button
               data-testid="detail-download-button"
               onClick={() => handleDownload(selectedFile)}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-zinc-950 shadow hover:bg-zinc-200 transition-colors"
+              aria-label="Download inspected file"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-xs font-semibold text-zinc-950 shadow hover:bg-zinc-200 transition-colors cursor-pointer"
             >
               <Download className="h-4 w-4" />
               <span>Download File</span>
             </button>
             <button
               onClick={() => deleteMutation.mutate(selectedFile.id)}
-              className="flex items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-red-400 hover:bg-red-500/10 hover:border-red-500/30 transition-colors"
+              aria-label="Delete inspected file"
+              className="flex items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-2.5 text-xs font-semibold text-red-400 hover:bg-red-500/10 hover:border-red-500/30 transition-colors cursor-pointer"
             >
               <Trash2 className="h-4 w-4" />
             </button>
           </div>
-        </div>
+        </aside>
       )}
     </div>
   );
